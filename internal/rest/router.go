@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/emeraldls/platnova-task/internal/generator"
 	"github.com/emeraldls/platnova-task/internal/types"
@@ -68,6 +69,14 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("error sending file: %v", err), http.StatusInternalServerError)
 		return
 	}
+
+	go func() {
+		time.Sleep(5 * time.Second)
+		err = os.Remove(fn + ".pdf")
+		if err != nil {
+			slog.Error("error deleting file", "err", err)
+		}
+	}()
 
 }
 

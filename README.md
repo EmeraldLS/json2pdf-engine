@@ -53,7 +53,7 @@ The following JSON structure outlines the schema for generating PDF statements:
 ## Usage
 
 - #### Using Online Version
-    - Visit the [PDF Generator](https://pdf-generator-uni.herokuapp.com/) web application.
+    - Visit the [PDF Generator](https://platnova-task-38f55c32e72d.herokuapp.com/) web application.
     - Upload a JSON file containing the data to be converted into a PDF document.
     - Click the "Generate PDF" button to create the PDF statement.
     - Download the generated PDF file to your local machine.
@@ -73,6 +73,11 @@ The following JSON structure outlines the schema for generating PDF statements:
         - Set the `useApi` to `true` in the .env file.
         - Run the following command to start the server:
             ```bash
+            make run
+            ```
+            or
+
+            ```bash
             go run main.go
             ```
         - Open your browser and visit `http://localhost:8080`.
@@ -84,6 +89,10 @@ The following JSON structure outlines the schema for generating PDF statements:
     - Clone the repository to your local machine.
     - Navigate to the project directory.
     - Run the following command to generate a PDF statement:
+        ```bash
+        make run
+        ```
+        or 
         ```bash
         go run main.go 
         ```
