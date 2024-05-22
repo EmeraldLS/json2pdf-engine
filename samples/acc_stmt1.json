@@ -1,0 +1,58 @@
+{
+  "title": "USD Statement",
+  "generated_date": "22 May 2024",
+  "bank_name": "First National Bank",
+  "customer_name": "John Doe",
+  "customer_address": {
+    "address_line1": "10 Main Street",
+    "address_line2": "Apartment B",
+    "city": "Anytown",
+    "county": "Los Angeles",
+    "post_code": "90210"
+  },
+  "balance_summary": [
+    {
+      "product": "Savings Account",
+      "opening_balance": 100.5,
+      "money_in": 1500.0,
+      "money_out": 850.25,
+      "closing_balance": 749.75
+    },
+    {
+      "product": "Checking Account",
+      "opening_balance": 52.78,
+      "money_in": 2100.0,
+      "money_out": 1875.42,
+      "closing_balance": 277.36
+    }
+  ],
+  "account_transactions": [
+    {
+      "date": "15 May 2024",
+      "description": "Salary Deposit",
+      "money_in": 2100.0,
+      "money_out": 0.0,
+      "balance": 2200.5
+    },
+    {
+      "date": "17 May 2024",
+      "description": "Rent Payment",
+      "money_in": 0.0,
+      "money_out": 1500.0,
+      "balance": 700.5
+    },
+    {
+      "date": "20 May 2024",
+      "description": "Grocery Purchase",
+      "money_in": 0.0,
+      "money_out": 350.25,
+      "balance": 349.75
+    }
+  ],
+  "iban_details": [
+    {
+      "iban": "US12345678901234567890",
+      "bic": "FIRNUSBK"
+    }
+  ]
+}

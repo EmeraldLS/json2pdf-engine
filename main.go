@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log/slog"
 	"os"
 
@@ -14,10 +15,10 @@ import (
 
 func main() {
 	// apiKey := flag.String("api_key", "", "API required to generate PDF")
-	// file := flag.String("json_file", "account_statement.json", "JSON file to generate PDF")
 	// useApi := flag.Bool("use_api", false, "Use the API to generate the PDF.")
+	file := flag.String("json_file", "account_statement.json", "JSON file to generate PDF")
 
-	// flag.Parse()
+	flag.Parse()
 
 	// if *useApi {
 	// 	slog.Info("Using the API to generate the PDF")
@@ -35,7 +36,6 @@ func main() {
 	}
 
 	apiKey := os.Getenv("apiKey")
-	file := "account_statement.json"
 
 	useApi := os.Getenv("useApi")
 	if useApi == "true" {
@@ -44,7 +44,7 @@ func main() {
 	}
 
 	c := types.NewClient(creator.New(), apiKey)
-	stmt, err := utils.ReadJSONFile(file)
+	stmt, err := utils.ReadJSONFile(*file)
 	if err != nil {
 		slog.Error("error has reading file", "err", err)
 		return

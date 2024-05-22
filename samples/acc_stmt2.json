@@ -1,0 +1,79 @@
+{
+  "title": "CAD Statement",
+  "generated_date": "22 May 2024",
+  "bank_name": "Scotia Bank",
+  "customer_name": "Jane Smith",
+  "customer_address": {
+    "address_line1": "55 Bay Street",
+    "address_line2": "#301",
+    "city": "Toronto",
+    "province": "Ontario",
+    "postal_code": "M5J 2L7"
+  },
+  "balance_summary": [
+    {
+      "product": "Chequing Account",
+      "opening_balance": 45.23,
+      "money_in": 800.0,
+      "money_out": 625.75,
+      "closing_balance": 219.48
+    },
+    {
+      "product": "Savings Account",
+      "opening_balance": 2000.0,
+      "money_in": 500.0,
+      "money_out": 0.0,
+      "closing_balance": 2500.0
+    },
+    {
+      "product": "Investment Account",
+      "opening_balance": 10000.0,
+      "money_in": 0.0,
+      "money_out": 2000.0,
+      "closing_balance": 8000.0
+    }
+  ],
+  "account_transactions": [
+    {
+      "date": "10 May 2024",
+      "description": "Deposit from Payroll",
+      "money_in": 800.0,
+      "money_out": 0.0,
+      "balance": 845.23
+    },
+    {
+      "date": "12 May 2024",
+      "description": "Payment to Utility Company",
+      "money_in": 0.0,
+      "money_out": 100.0,
+      "balance": 745.23
+    },
+    {
+      "date": "15 May 2024",
+      "description": "Grocery Purchase",
+      "money_in": 0.0,
+      "money_out": 250.0,
+      "balance": 495.23
+    },
+    {
+      "date": "17 May 2024",
+      "description": "Restaurant Bill",
+      "money_in": 0.0,
+      "money_out": 275.75,
+      "balance": 219.48
+    },
+    {
+      "date": "20 May 2024",
+      "description": "Transfer to Investment Account",
+      "money_in": 0.0,
+      "money_out": 2000.0,
+      "balance": 219.48
+    }
+  ],
+  "iban_details": [
+    {
+      "iban": "CA12345678901234567890",
+      "bic": "NOSCATT"
+    }
+  ]
+}

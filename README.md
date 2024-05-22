@@ -49,7 +49,7 @@ The following JSON structure outlines the schema for generating PDF statements:
 ```
 
 ## Usage
-
+You can find sample data to use in the [samples folder](https://github.com/EmeraldLS/platnova-task/tree/master/samples)
 - #### Using Online Version
     - Visit the [PDF Generator](https://platnova-task-38f55c32e72d.herokuapp.com/) web application.
     - Upload a JSON file containing the data to be converted into a PDF document and it downloads instantly 
@@ -74,7 +74,7 @@ The following JSON structure outlines the schema for generating PDF statements:
             or
 
             ```bash
-            go run main.go
+            go run main.go 
             ```
         - Open your browser and visit `http://localhost:8080`.
         - Upload a JSON file containing the data to be converted into a PDF document using the defined schema above.
@@ -90,7 +90,11 @@ The following JSON structure outlines the schema for generating PDF statements:
         ```
         or 
         ```bash
-        go run main.go 
+        go run main.go || go run main.go -json_file=<path_to_json_file> 
+        ```
+        e.g
+        ```bash
+            go run main.go -json_file=./samples/acc_stmt2.json
         ```
 
 ## Testing
