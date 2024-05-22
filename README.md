@@ -9,45 +9,43 @@ The following JSON structure outlines the schema for generating PDF statements:
 
 ```json
 {
-    "statement": {
-        "title": "string",
-        "generated_date": "string",
-        "bank_name": "string",
-        "customer_name": "string",
-        "customer_address": {
-            "line1": "string",
-            "line2": "string",
-            "city": "string",
-            "county": "string",
-            "postcode": "string"
-        },
-        "balance_summary":[
-            {
+    "title": "string",
+    "generated_date": "string",
+    "bank_name": "string",
+    "customer_name": "string",
+    "customer_address": {
+        "address_line1": "string",
+        "address_line2": "string",
+        "city": "string",
+        "county": "string",
+        "post_code": "string"
+    },
+    "balance_summary": [
+        {
             "product": "string",
             "opening_balance": number,
-            "money_out": number,
             "money_in": number,
+            "money_out": number,
             "closing_balance": number
-            }
-        ],
-        "account_transactions": [
-            {
-                "date": "string",
-                "description": "string",
-                "money_out": number,
-                "money_in": number,
-                "balance": number
-            }
-        ],
-        "iban_details": [
-            {
-                "iban": "string",
-                "bic": "string",
-                "note": "string"
-            }
-        ]
-    }
+        }
+    ],
+    "account_transactions": [
+        {
+            "date": "string",
+            "description": "string",
+            "money_in": number,
+            "money_out": number,
+            "balance": number
+        }
+    ],
+    "iban_details": [
+        {
+            "iban": "string",
+            "bic": "string"
+        }
+    ]
 }
+
 ```
 
 ## Usage
