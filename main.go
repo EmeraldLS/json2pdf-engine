@@ -32,7 +32,6 @@ func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
 		slog.Error("error loading .env file", "err", err)
-		return
 	}
 
 	apiKey := os.Getenv("apiKey")

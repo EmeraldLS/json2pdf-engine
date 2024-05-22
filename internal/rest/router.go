@@ -84,6 +84,10 @@ func SetupRoutes() {
 	http.HandleFunc("POST /upload", uploadFile)
 
 	PORT := os.Getenv("PORT")
+	if PORT == "" {
+		PORT = "2222"
+
+	}
 
 	slog.Info("Starting server", "address", fmt.Sprintf("0.0.0.0:%s", PORT))
 
