@@ -54,9 +54,7 @@ The following JSON structure outlines the schema for generating PDF statements:
 
 - #### Using Online Version
     - Visit the [PDF Generator](https://platnova-task-38f55c32e72d.herokuapp.com/) web application.
-    - Upload a JSON file containing the data to be converted into a PDF document.
-    - Click the "Generate PDF" button to create the PDF statement.
-    - Download the generated PDF file to your local machine.
+    - Upload a JSON file containing the data to be converted into a PDF document and it downloads instantly 
 - #### Using Local Version
      - You need an API key to use the local version of the application. You can obtain an API key by signing up on the [UniDoc](https://unidoc.io/) website.
 
