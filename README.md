@@ -58,29 +58,35 @@ The following JSON structure outlines the schema for generating PDF statements:
     - Click the "Generate PDF" button to create the PDF statement.
     - Download the generated PDF file to your local machine.
 - #### Using Local Version
+     - You need an API key to use the local version of the application. You can obtain an API key by signing up on the [UniDoc](https://unidoc.io/) website.
+
+    You need to have .env file with the following content:
+    ```bash
+    apiKey=<your_api_key>
+    PORT=8080
+    useApi=false
+
+    ```
     1. Local version is made of two aspects, first is, you can use the api which support upload of `.json` file and downloads the generated pdf file to your computer instantly. It requires some data in the `.env` file, there's a `.env.example` file you can follow through:
         - Clone the repository to your local machine.
         - Navigate to the project directory.
+        - Set the `useApi` to `true` in the .env file.
         - Run the following command to start the server:
             ```bash
-            go run main.go -use_api
+            go run main.go
             ```
         - Open your browser and visit `http://localhost:8080`.
         - Upload a JSON file containing the data to be converted into a PDF document using the defined schema above.
 
-    2. Second is, you can run the application on your local machine and generate the pdf file.
+    2. Second is, you can run the application on your local machine and generate the pdf file with the useApi set to false or left empty string in the .env file.
 
-    To use the local version of the application, follow the steps below:
-
-    - You need an API key to use the local version of the application. You can obtain an API key by signing up on the [UniDoc](https://unidoc.io/) website. 
+    -  
     - Clone the repository to your local machine.
     - Navigate to the project directory.
     - Run the following command to generate a PDF statement:
         ```bash
-        go run main.go -api_key=<your_api_key> -json_file=<path_to_json_file> 
+        go run main.go 
         ```
-    - Replace `<path_to_json_file>` with the path to the JSON file containing the data.
-    - Replace `<path_to_pdf_file>` with the desired output path for the generated PDF document.
 
 ## Testing
 - Run the following command to execute the unit tests:
