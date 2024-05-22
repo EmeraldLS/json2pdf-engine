@@ -76,7 +76,6 @@ func SetupRoutes() {
 	err := godotenv.Load(".env")
 	if err != nil {
 		slog.Error("error loading .env file", "err", err)
-		return
 	}
 
 	fs := http.FileServer(http.Dir("./static"))
