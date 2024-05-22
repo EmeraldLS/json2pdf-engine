@@ -1,0 +1,66 @@
+{
+    "title": "EUR Statement",
+    "generated_date": "20 May 2023",
+    "bank_name": "Revolut Bank UAB",
+    "customer_name": "Sandra Saulgrieze",
+    "customer_address": {
+        "address_line1": "14 The Dale",
+        "address_line2": "Whitefield Hall",
+        "city": "Bettytown",
+        "county": "Meath",
+        "post_code": "A92N27C"
+    },
+    "balance_summary": [
+        {
+        "product": "Account (Current Account)",
+        "opening_balance": 2.52,
+        "money_in": 1978.00,
+        "money_out": 1944.09,
+        "closing_balance": 36.43
+    }
+    ],
+    "account_transactions": [
+        {
+            "date": "3 Feb 2023",
+            "description": "Apple Pay Top-up by *5453",
+            "money_in": 50.00,
+            "money_out": 0.00,
+            "balance": 52.52
+        },
+        {
+            "date": "3 Feb 2023",
+            "description": "Apple Pay Top-up by *5453",
+            "money_in": 100.00,
+            "money_out": 0.00,
+            "balance": 152.52
+        },
+        {
+            "date": "3 Feb 2023",
+            "description": "To LINA MILLER SAULGRIEZE",
+            "money_in": 0.00,
+            "money_out": 100.00,
+            "balance": 52.52
+        },
+        {
+            "date": "7 Feb 2023",
+            "description": "To LINA MILLER SAULGRIEZE",
+            "money_in": 0.00,
+            "money_out": 10.00,
+            "balance": 42.52
+        }
+    ],
+    "iban_details": [
+        {
+            "iban": "IE30REVO9930622547749",
+            "bic": "REVOGB21"
+        },
+        {
+            "iban": "LT705250041069205955",
+            "bic": "REVOLT21"
+        },
+        {
+            "iban": "LT08707004342646713",
+            "bic": "RETBLT21"
+        }
+    ]
+}
