@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enhanced Account Statement Upload with Improved PDF Preview</title>
+    <title>PDF Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
   </head>
   <body class="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -253,15 +252,6 @@
               </form>
             </div>
           </div>
-
-          <div class="mt-8 bg-white rounded-xl shadow-md overflow-hidden">
-            <div class="p-8">
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">
-                Account Balance Chart
-              </h3>
-              <canvas id="accountChart"></canvas>
-            </div>
-          </div>
         </div>
 
         <div class="w-full lg:w-1/2">
@@ -407,58 +397,6 @@
 
       populateForm();
       createNewTransaction();
-
-      const ctx = document.getElementById("accountChart").getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Savings", "Checking"],
-          datasets: [
-            {
-              label: "Opening Balance",
-              data: [
-                parseFloat(
-                  document.getElementById("savingsOpeningBalance").value
-                ),
-                parseFloat(
-                  document.getElementById("checkingOpeningBalance").value
-                ),
-              ],
-              backgroundColor: "rgba(54, 162, 235, 0.5)",
-              borderColor: "rgba(54, 162, 235, 1)",
-              borderWidth: 1,
-            },
-            {
-              label: "Money In",
-              data: [
-                parseFloat(document.getElementById("savingsMoneyIn").value),
-                parseFloat(document.getElementById("checkingMoneyIn").value),
-              ],
-              backgroundColor: "rgba(75, 192, 192, 0.5)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-            {
-              label: "Money Out",
-              data: [
-                parseFloat(document.getElementById("savingsMoneyOut").value),
-                parseFloat(document.getElementById("checkingMoneyOut").value),
-              ],
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-              borderColor: "rgba(255, 99, 132, 1)",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
 
       pdfjsLib.GlobalWorkerOptions.workerSrc =
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js";
