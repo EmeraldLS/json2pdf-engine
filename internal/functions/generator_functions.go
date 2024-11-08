@@ -41,7 +41,7 @@ func DrawHeading(c *creator.Creator, stmt types.AccountStatement) error {
 	headerStyle := c.NewTextStyle()
 	headerStyle.FontSize = 25
 
-	err := utils.DrawCell(table, utils.NewPara(c, "Revolut", headerStyle), cellStyles["heading-left"])
+	err := utils.DrawCell(table, utils.NewPara(c, "Lawrence Statement Generator", headerStyle), cellStyles["heading-left"])
 	if err != nil {
 		return err
 	}

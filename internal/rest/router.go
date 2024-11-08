@@ -1,51 +1,99 @@
 package rest
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
 	"os"
+	"path/filepath"
+	"runtime"
+	"strconv"
 	"time"
 
 	"github.com/emeraldls/platnova-task/internal/generator"
 	"github.com/emeraldls/platnova-task/internal/types"
-	"github.com/joho/godotenv"
+	"github.com/gin-gonic/gin"
 	"github.com/unidoc/unipdf/v3/creator"
 )
 
-func uploadFile(w http.ResponseWriter, r *http.Request) {
-	slog.Info("File Upload Endpoint Hit")
+func generatePDF(w http.ResponseWriter, r *http.Request) {
+	var apiKey = os.Getenv("apiKey")
+	r.ParseForm()
 
-	r.ParseMultipartForm(3 << 20)
+	customerName := r.FormValue("customerName")
+	customerAddressLine1 := r.FormValue("addressLine1")
+	customerAddressLine2 := r.FormValue("addressLine2")
+	city := r.FormValue("city")
+	county := r.FormValue("county")
+	postcode := r.FormValue("postcode")
 
-	file, handler, err := r.FormFile("myFile")
-	if err != nil {
-		slog.Error("error retrieving file", "err", err)
-		return
+	savingsOpeningBalance, _ := strconv.ParseFloat(r.FormValue("savingsOpeningBalance"), 64)
+	savingsMoneyIn, _ := strconv.ParseFloat(r.FormValue("savingsMoneyIn"), 64)
+	savingsMoneyOut, _ := strconv.ParseFloat(r.FormValue("savingsMoneyOut"), 64)
+	checkingOpeningBalance, _ := strconv.ParseFloat(r.FormValue("checkingOpeningBalance"), 64)
+	checkingMoneyIn, _ := strconv.ParseFloat(r.FormValue("checkingMoneyIn"), 64)
+	checkingMoneyOut, _ := strconv.ParseFloat(r.FormValue("checkingMoneyOut"), 64)
+	iban := r.FormValue("iban")
+	bic := r.FormValue("bic")
+
+	transactionDates := r.Form["transactionDate"]
+	transactionDescriptions := r.Form["transactionDescription"]
+	transactionMoneyIns := r.Form["transactionMoneyIn"]
+	transactionMoneyOuts := r.Form["transactionMoneyOut"]
+
+	var transactions []types.AccountTransactions
+
+	for i := 0; i < len(transactionDates); i++ {
+		transactionDate := transactionDates[i]
+		transactionDescription := transactionDescriptions[i]
+		transactionMoneyIn, _ := strconv.ParseFloat(transactionMoneyIns[i], 64)
+		transactionMoneyOut, _ := strconv.ParseFloat(transactionMoneyOuts[i], 64)
+
+		balance := savingsOpeningBalance + savingsMoneyIn - savingsMoneyOut + transactionMoneyIn - transactionMoneyOut
+
+		transactions = append(transactions, types.AccountTransactions{
+			Date:        transactionDate,
+			Description: transactionDescription,
+			MoneyIn:     transactionMoneyIn,
+			MoneyOut:    transactionMoneyOut,
+			Balance:     balance,
+		})
 	}
-	defer file.Close()
 
-	fb, err := io.ReadAll(file)
-	if err != nil {
-		slog.Error("error reading file", "err", err)
-		return
+	accStmt := types.AccountStatement{
+		CustomerName: customerName,
+		CustomerAddress: types.CustomerAddress{
+			AddressLine1: customerAddressLine1,
+			AddressLine2: customerAddressLine2,
+			City:         city,
+			County:       county,
+			Postcode:     postcode,
+		},
+		BalanceSummary: []types.BalanceSummary{
+			{
+				Product:        "Savings Account",
+				OpeningBalance: savingsOpeningBalance,
+				MoneyIn:        savingsMoneyIn,
+				MoneyOut:       savingsMoneyOut,
+				ClosingBalance: savingsOpeningBalance + savingsMoneyIn - savingsMoneyOut,
+			},
+			{
+				Product:        "Checking Account",
+				OpeningBalance: checkingOpeningBalance,
+				MoneyIn:        checkingMoneyIn,
+				MoneyOut:       checkingMoneyOut,
+				ClosingBalance: checkingOpeningBalance + checkingMoneyIn - checkingMoneyOut,
+			},
+		},
+		AccountTransactions: transactions,
+		IBANDetails: []types.IBANDetails{
+			{
+				IBAN: iban,
+				BIC:  bic,
+			},
+		},
 	}
-
-	if handler.Filename[len(handler.Filename)-5:] != ".json" {
-		http.Error(w, "file must be a json file", http.StatusBadRequest)
-		return
-	}
-
-	var accStmt types.AccountStatement
-	err = json.Unmarshal(fb, &accStmt)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("error parsing json: %v", err), http.StatusInternalServerError)
-		return
-	}
-
-	apiKey := os.Getenv("apiKey")
 
 	c := types.NewClient(creator.New(), apiKey)
 	fn, err := generator.GenerateAccountStatementPDF(*c, accStmt)
@@ -77,19 +125,26 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 			slog.Error("error deleting file", "err", err)
 		}
 	}()
+}
 
+func GetProjectRoot() string {
+	_, b, _, _ := runtime.Caller(0)
+	return filepath.Join(filepath.Dir(b), "..")
 }
 
 func SetupRoutes() {
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		slog.Error("error loading .env file", "err", err)
-	}
+	s := gin.Default()
 
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/", fs)
-	http.HandleFunc("POST /upload", uploadFile)
+	s.LoadHTMLGlob(filepath.Join(GetProjectRoot(), "templates/*"))
+	s.Static("/static", filepath.Join(GetProjectRoot(), "static"))
+
+	s.GET("/", func(c *gin.Context) {
+		c.HTML(200, "index.html", gin.H{})
+	})
+	s.POST("/generate", func(ctx *gin.Context) {
+		generatePDF(ctx.Writer, ctx.Request)
+	})
 
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
@@ -97,13 +152,6 @@ func SetupRoutes() {
 
 	}
 
-	slog.Info("Starting server", "address", fmt.Sprintf("0.0.0.0:%s", PORT))
-
-	err = http.ListenAndServe(":"+PORT, nil)
-
-	if err != nil {
-		slog.Error("error starting server", "err", err)
-		return
-	}
+	s.Run("0.0.0.0:" + PORT)
 
 }

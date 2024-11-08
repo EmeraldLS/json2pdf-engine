@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Account Statement Upload with Improved PDF Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <div class="w-full lg:w-1/2">
+          <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="p-8">
+              <h2 class="text-3xl font-extrabold text-gray-900 mb-6">
+                Account Statement Details
+              </h2>
+              <form action="/generate" method="post" class="space-y-6">
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      for="customerName"
+                      class="block text-sm font-medium text-gray-700"
+                      >Customer Name</label
+                    >
+                    <input
+                      type="text"
+                      name="customerName"
+                      id="customerName"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="addressLine1"
+                      class="block text-sm font-medium text-gray-700"
+                      >Address Line 1</label
+                    >
+                    <input
+                      type="text"
+                      name="addressLine1"
+                      id="addressLine1"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="addressLine2"
+                      class="block text-sm font-medium text-gray-700"
+                      >Address Line 2 (optional)</label
+                    >
+                    <input
+                      type="text"
+                      name="addressLine2"
+                      id="addressLine2"
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="city"
+                      class="block text-sm font-medium text-gray-700"
+                      >City</label
+                    >
+                    <input
+                      type="text"
+                      name="city"
+                      id="city"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="county"
+                      class="block text-sm font-medium text-gray-700"
+                      >County</label
+                    >
+                    <input
+                      type="text"
+                      name="county"
+                      id="county"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="postcode"
+                      class="block text-sm font-medium text-gray-700"
+                      >Postcode</label
+                    >
+                    <input
+                      type="text"
+                      name="postcode"
+                      id="postcode"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3">
+                  <div>
+                    <label
+                      for="savingsOpeningBalance"
+                      class="block text-sm font-medium text-gray-700"
+                      >Savings Opening Balance</label
+                    >
+                    <input
+                      type="number"
+                      name="savingsOpeningBalance"
+                      id="savingsOpeningBalance"
+                      step="0.01"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="savingsMoneyIn"
+                      class="block text-sm font-medium text-gray-700"
+                      >Savings Money In</label
+                    >
+                    <input
+                      type="number"
+                      name="savingsMoneyIn"
+                      id="savingsMoneyIn"
+                      step="0.01"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="savingsMoneyOut"
+                      class="block text-sm font-medium text-gray-700"
+                      >Savings Money Out</label
+                    >
+                    <input
+                      type="number"
+                      name="savingsMoneyOut"
+                      id="savingsMoneyOut"
+                      step="0.01"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="checkingOpeningBalance"
+                      class="block text-sm font-medium text-gray-700"
+                      >Checking Opening Balance</label
+                    >
+                    <input
+                      type="number"
+                      name="checkingOpeningBalance"
+                      id="checkingOpeningBalance"
+                      step="0.01"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="checkingMoneyIn"
+                      class="block text-sm font-medium text-gray-700"
+                      >Checking Money In</label
+                    >
+                    <input
+                      type="number"
+                      name="checkingMoneyIn"
+                      id="checkingMoneyIn"
+                      step="0.01"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="checkingMoneyOut"
+                      class="block text-sm font-medium text-gray-700"
+                      >Checking Money Out</label
+                    >
+                    <input
+                      type="number"
+                      name="checkingMoneyOut"
+                      id="checkingMoneyOut"
+                      step="0.01"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      for="iban"
+                      class="block text-sm font-medium text-gray-700"
+                      >IBAN</label
+                    >
+                    <input
+                      type="text"
+                      name="iban"
+                      id="iban"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="bic"
+                      class="block text-sm font-medium text-gray-700"
+                      >BIC</label
+                    >
+                    <input
+                      type="text"
+                      name="bic"
+                      id="bic"
+                      required
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                    Transactions
+                  </h3>
+                  <div id="transactions_data" class="space-y-4"></div>
+                  <button
+                    type="button"
+                    id="new_transaction"
+                    class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add New Transaction
+                  </button>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Generate PDF
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="p-8">
+              <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                Account Balance Chart
+              </h3>
+              <canvas id="accountChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full lg:w-1/2">
+          <div
+            class="bg-white rounded-xl shadow-md overflow-hidden sticky top-8"
+          >
+            <div class="p-8">
+              <h2 class="text-3xl font-extrabold text-gray-900 mb-6">
+                Sample of PDF
+              </h2>
+              <div
+                id="pdf-controls"
+                class="mb-4 flex items-center justify-between"
+              >
+                <div>
+                  <button
+                    id="prev"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l"
+                  >
+                    Prev
+                  </button>
+                  <button
+                    id="next"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r"
+                  >
+                    Next
+                  </button>
+                  <span class="ml-4"
+                    >Page: <span id="page_num"></span> /
+                    <span id="page_count"></span
+                  ></span>
+                </div>
+                <div>
+                  <button
+                    id="zoom-out"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l"
+                  >
+                    -
+                  </button>
+                  <button
+                    id="zoom-in"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div
+                id="pdf-viewer"
+                class="border border-gray-300 rounded-lg overflow-hidden bg-gray-100"
+                style="height: 800px"
+              >
+                <canvas id="pdf-render"></canvas>
+              </div>
+              <div id="pdf-loading" class="hidden">
+                <p class="text-center text-gray-500 mt-4">Loading PDF...</p>
+              </div>
+              <div id="pdf-error" class="hidden">
+                <p class="text-center text-red-500 mt-4">
+                  Error loading PDF. Please try again.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function createNewTransaction() {
+        const transactionsData = document.getElementById("transactions_data");
+        const newTransaction = document.createElement("div");
+        newTransaction.classList.add(
+          "transaction",
+          "bg-gray-50",
+          "p-4",
+          "rounded-md"
+        );
+
+        newTransaction.innerHTML = `
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                    <div>
+                        <label for="transactionDate" class="block text-sm font-medium text-gray-700">Transaction Date</label>
+                        <input type="date" name="transactionDate" required class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1">
+                    </div>
+                    <div>
+                        <label for="transactionDescription" class="block text-sm font-medium text-gray-700">Transaction Description</label>
+                        <input type="text" name="transactionDescription" required class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1">
+                    </div>
+                    <div>
+                        <label for="transactionMoneyIn" class="block text-sm font-medium text-gray-700">Money In</label>
+                        <input type="number" name="transactionMoneyIn" step="0.01" required class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1">
+                    </div>
+                    <div>
+                        <label for="transactionMoneyOut" class="block text-sm font-medium text-gray-700">Money Out</label>
+                        <input type="number" name="transactionMoneyOut" step="0.01" required class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-1">
+                    </div>
+                </div>
+                <button type="button" class="delete_transaction mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Delete Transaction
+                </button>
+            `;
+
+        transactionsData.appendChild(newTransaction);
+
+        const deleteButton = newTransaction.querySelector(
+          ".delete_transaction"
+        );
+        deleteButton.addEventListener("click", () => newTransaction.remove());
+      }
+
+      const addTransactionButton = document.querySelector("#new_transaction");
+      addTransactionButton.addEventListener("click", createNewTransaction);
+
+      function generateRandomData() {
+        return {
+          customerName: "John Doe",
+          addressLine1: "123 Main St",
+          addressLine2: "",
+          city: "Ojo",
+          county: "Lagos",
+          postcode: "110001",
+          savingsOpeningBalance: (Math.random() * 10000).toFixed(2),
+          savingsMoneyIn: (Math.random() * 5000).toFixed(2),
+          savingsMoneyOut: (Math.random() * 3000).toFixed(2),
+          checkingOpeningBalance: (Math.random() * 5000).toFixed(2),
+          checkingMoneyIn: (Math.random() * 3000).toFixed(2),
+          checkingMoneyOut: (Math.random() * 2000).toFixed(2),
+          iban: "GB29NWBK60161331926819",
+          bic: "NWBKGB2L",
+        };
+      }
+
+      function populateForm() {
+        const data = generateRandomData();
+        Object.keys(data).forEach((key) => {
+          const input = document.getElementById(key);
+          if (input) {
+            input.value = data[key];
+          }
+        });
+      }
+
+      populateForm();
+      createNewTransaction();
+
+      const ctx = document.getElementById("accountChart").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Savings", "Checking"],
+          datasets: [
+            {
+              label: "Opening Balance",
+              data: [
+                parseFloat(
+                  document.getElementById("savingsOpeningBalance").value
+                ),
+                parseFloat(
+                  document.getElementById("checkingOpeningBalance").value
+                ),
+              ],
+              backgroundColor: "rgba(54, 162, 235, 0.5)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1,
+            },
+            {
+              label: "Money In",
+              data: [
+                parseFloat(document.getElementById("savingsMoneyIn").value),
+                parseFloat(document.getElementById("checkingMoneyIn").value),
+              ],
+              backgroundColor: "rgba(75, 192, 192, 0.5)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+            {
+              label: "Money Out",
+              data: [
+                parseFloat(document.getElementById("savingsMoneyOut").value),
+                parseFloat(document.getElementById("checkingMoneyOut").value),
+              ],
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js";
+
+      const samplePdfUrl = "/static/sample_preview.pdf";
+      let pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 0.9;
+
+      function renderPage(num) {
+        pageRendering = true;
+        document.getElementById("pdf-loading").classList.remove("hidden");
+        document.getElementById("pdf-error").classList.add("hidden");
+
+        pdfDoc.getPage(num).then(function (page) {
+          const viewport = page.getViewport({ scale: scale });
+          const canvas = document.getElementById("pdf-render");
+          const ctx = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          const renderContext = {
+            canvasContext: ctx,
+            viewport: viewport,
+          };
+          const renderTask = page.render(renderContext);
+
+          renderTask.promise
+            .then(function () {
+              pageRendering = false;
+              document.getElementById("pdf-loading").classList.add("hidden");
+              if (pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
+              }
+            })
+            .catch(function (error) {
+              console.error("Error rendering PDF:", error);
+              document.getElementById("pdf-loading").classList.add("hidden");
+              document.getElementById("pdf-error").classList.remove("hidden");
+            });
+        });
+
+        document.getElementById("page_num").textContent = num;
+      }
+
+      function queueRenderPage(num) {
+        if (pageRendering) {
+          pageNumPending = num;
+        } else {
+          renderPage(num);
+        }
+      }
+
+      function onPrevPage() {
+        if (pageNum <= 1) {
+          return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+      }
+
+      function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+          return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+      }
+
+      function zoomIn() {
+        scale *= 1.2;
+
+        renderPage(pageNum);
+      }
+
+      function zoomOut() {
+        scale /= 1.2;
+        console.log(scale);
+        renderPage(pageNum);
+      }
+
+      document.getElementById("prev").addEventListener("click", onPrevPage);
+      document.getElementById("next").addEventListener("click", onNextPage);
+      document.getElementById("zoom-in").addEventListener("click", zoomIn);
+      document.getElementById("zoom-out").addEventListener("click", zoomOut);
+
+      pdfjsLib
+        .getDocument(samplePdfUrl)
+        .promise.then(function (pdfDoc_) {
+          pdfDoc = pdfDoc_;
+          document.getElementById("page_count").textContent = pdfDoc.numPages;
+          renderPage(pageNum);
+        })
+        .catch(function (error) {
+          console.error("Error loading PDF:", error);
+          document.getElementById("pdf-loading").classList.add("hidden");
+          document.getElementById("pdf-error").classList.remove("hidden");
+        });
+    </script>
+  </body>
+</html>

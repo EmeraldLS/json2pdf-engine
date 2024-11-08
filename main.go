@@ -59,3 +59,10 @@ func main() {
 	slog.Info("Statement Generated: ", "filename", fn+".pdf")
 
 }
+
+func init() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		slog.Error("error loading .env file", "err", err)
+	}
+}
